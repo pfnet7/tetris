@@ -1,19 +1,17 @@
 package io.github.sczerepko.tetris.controller;
 
-import io.github.sczerepko.tetris.model.pieces.CurrentPiece;
-
 import java.util.EventListener;
 
 interface InputListener extends EventListener {
 
     void startNewGame();
 
-    CurrentPiece onDownEvent();
+    void onDownEvent();
 
-    CurrentPiece onRightEvent();
+    void onRightEvent();
 
-    CurrentPiece onLeftEvent();
+    void onLeftEvent();
 
-    CurrentPiece onRotateEvent();
+    void onRotateEvent();
 
 }

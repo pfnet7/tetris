@@ -13,12 +13,15 @@ public class Board {
     public static final int TETRIS_POINTS = 800;
     public static final int REGULAR_CLEAR_POINTS = 100;
 
+    private static final int BOARD_WIDTH = 10;
+    private static final int BOARD_HEIGHT = 20;
+
     private IntegerProperty score;
     private Color[][] boardMatrix;
     private CurrentPiece currentPiece;
 
-    public Board(int width, int height) {
-        boardMatrix = new Color[width][height];
+    public Board() {
+        boardMatrix = new Color[BOARD_WIDTH][BOARD_HEIGHT];
         score = new SimpleIntegerProperty(0);
     }
 

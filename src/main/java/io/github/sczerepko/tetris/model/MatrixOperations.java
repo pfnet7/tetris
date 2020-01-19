@@ -10,7 +10,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 class MatrixOperations {
 
@@ -75,7 +77,7 @@ class MatrixOperations {
         for (int i = 0; i < boardMatrix.length; i++) {
             for (int j = 0; j < boardMatrix[i].length; j++) {
                 if (!fullRowIndexes.contains(j)) {
-                    if (minRowIndex > j) {
+                    if (j < minRowIndex) {
                         newBoard[i][j + numberOfFullRows] = boardMatrix[i][j];
                     } else {
                         newBoard[i][j] = boardMatrix[i][j];

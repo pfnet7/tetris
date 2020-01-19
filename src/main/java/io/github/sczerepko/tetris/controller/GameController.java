@@ -7,17 +7,14 @@ import io.github.sczerepko.tetris.model.pieces.RandomPieceGenerator;
 
 public class GameController implements InputListener {
 
-    private static final int BOARD_WIDTH = 10;
-    private static final int BOARD_HEIGHT = 20;
-
     private GuiController guiController;
     private RandomPieceGenerator randomPieceGenerator;
     private Board board;
 
-    public GameController(GuiController guiController) {
+    public GameController(GuiController guiController, Board board, RandomPieceGenerator randomPieceGenerator) {
         this.guiController = guiController;
-        randomPieceGenerator = new RandomPieceGenerator();
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
+        this.randomPieceGenerator = randomPieceGenerator;
+        this.board = board;
         board.setCurrentPiece(randomPieceGenerator.generate());
         guiController.setInputListener(this);
         guiController.initializeView(board);
@@ -27,7 +24,7 @@ public class GameController implements InputListener {
 
     @Override
     public void startNewGame() {
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
+        board = new Board();
         board.setCurrentPiece(randomPieceGenerator.generate());
         guiController.bindScore(board.scoreProperty());
         board.scoreProperty().setValue(0);
@@ -35,35 +32,39 @@ public class GameController implements InputListener {
     }
 
     @Override
-    public CurrentPiece onDownEvent() {
-        if (!board.canPieceMove(Translation.DOWN)) {
-            board.handlePieceEmbed();
-            CurrentPiece nextPiece = randomPieceGenerator.generate();
-            if (board.isPieceBlocked(nextPiece)) {
-                guiController.gameOver();
-            }
-            board.setCurrentPiece(nextPiece);
-            guiController.refreshGameBackground(board.getBoardMatrix());
-            guiController.renderNextPiecePane(randomPieceGenerator.peek());
-            return board.getCurrentPiece();
-        } else {
-            return board.moveCurrentPiece(Translation.DOWN);
+    public void onDownEvent() {
+        if (board.canPieceMove(Translation.DOWN)) {
+            CurrentPiece currentPiece = board.moveCurrentPiece(Translation.DOWN);
+            guiController.refresh(currentPiece);
+            return;
         }
+        board.handlePieceEmbed();
+        CurrentPiece nextPiece = randomPieceGenerator.generate();
+        if (board.isPieceBlocked(nextPiece)) {
+            guiController.gameOver();
+        }
+        board.setCurrentPiece(nextPiece);
+        guiController.refreshGameBackground(board.getBoardMatrix());
+        guiController.renderNextPiecePane(randomPieceGenerator.peek());
+        guiController.refresh(board.getCurrentPiece());
     }
 
     @Override
-    public CurrentPiece onRightEvent() {
-        return board.moveCurrentPiece(Translation.RIGHT);
+    public void onRightEvent() {
+        CurrentPiece currentPiece = board.moveCurrentPiece(Translation.RIGHT);
+        guiController.refresh(currentPiece);
     }
 
     @Override
-    public CurrentPiece onLeftEvent() {
-        return board.moveCurrentPiece(Translation.LEFT);
+    public void onLeftEvent() {
+        CurrentPiece currentPiece = board.moveCurrentPiece(Translation.LEFT);
+        guiController.refresh(currentPiece);
     }
 
     @Override
-    public CurrentPiece onRotateEvent() {
-        return board.rotateCurrentPiece();
+    public void onRotateEvent() {
+        CurrentPiece currentPiece = board.rotateCurrentPiece();
+        guiController.refresh(currentPiece);
     }
 
 }

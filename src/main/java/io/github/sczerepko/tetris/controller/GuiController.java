@@ -19,10 +19,11 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
 
 public class GuiController implements Initializable {
 
-    private static final int PIECE_SIZE = 30;
+    private static final int RECTANGLE_SIZE = 30;
 
     @FXML
     private GridPane brickPanel;
@@ -57,19 +58,19 @@ public class GuiController implements Initializable {
             }
             switch (event.getCode()) {
                 case DOWN:
-                    refresh(inputListener.onDownEvent());
+                    inputListener.onDownEvent();
                     event.consume();
                     break;
                 case RIGHT:
-                    refresh(inputListener.onRightEvent());
+                    inputListener.onRightEvent();
                     event.consume();
                     break;
                 case LEFT:
-                    refresh(inputListener.onLeftEvent());
+                    inputListener.onLeftEvent();
                     event.consume();
                     break;
                 case UP:
-                    refresh(inputListener.onRotateEvent());
+                    inputListener.onRotateEvent();
                     event.consume();
                     break;
                 case P:
@@ -83,11 +84,14 @@ public class GuiController implements Initializable {
     }
 
     public void initializeView(Board board) {
-        CurrentPiece piece = board.getCurrentPiece();
-        initGridPaneBackingMatrix(board);
+        Color[][] boardMatrix = board.getBoardMatrix();
+        gridPaneBackingMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
+        initGridPaneBackingMatrix(gridPane, gridPaneBackingMatrix, boardMatrix, (rectangle, color) -> rectangle.setFill(Color.TRANSPARENT));
 
+        CurrentPiece piece = board.getCurrentPiece();
         Color[][] pieceMatrix = piece.getPieceMatrix();
-        initBrickPanelBackingMatrix(pieceMatrix);
+        brickPanelBackingMatrix = new Rectangle[pieceMatrix.length][pieceMatrix[0].length];
+        initGridPaneBackingMatrix(brickPanel, brickPanelBackingMatrix, pieceMatrix, this::setRectangleStyle);
 
         moveBrickPanel(piece);
 
@@ -109,47 +113,14 @@ public class GuiController implements Initializable {
         });
     }
 
-    private void initGridPaneBackingMatrix(Board board) {
-        Color[][] boardMatrix = board.getBoardMatrix();
-        gridPaneBackingMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
-        for (int i = 0; i < boardMatrix.length; i++) {
-            for (int j = 0; j < boardMatrix[i].length; j++) {
-                Rectangle rectangle = new Rectangle(PIECE_SIZE, PIECE_SIZE);
-                rectangle.setFill(Color.TRANSPARENT);
-                gridPaneBackingMatrix[i][j] = rectangle;
+    private void initGridPaneBackingMatrix(GridPane gridPane, Rectangle[][] backingMatrix, Color[][] sourceMatrix,
+                                           BiConsumer<Rectangle, Color> rectangleStyler) {
+        for (int i = 0; i < sourceMatrix.length; i++) {
+            for (int j = 0; j < sourceMatrix[i].length; j++) {
+                Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE);
+                rectangleStyler.accept(rectangle, sourceMatrix[i][j]);
+                backingMatrix[i][j] = rectangle;
                 gridPane.add(rectangle, i, j);
-            }
-        }
-    }
-
-    private void initBrickPanelBackingMatrix(Color[][] pieceMatrix) {
-        brickPanelBackingMatrix = new Rectangle[pieceMatrix.length][pieceMatrix[0].length];
-        for (int i = 0; i < pieceMatrix.length; i++) {
-            for (int j = 0; j < pieceMatrix[i].length; j++) {
-                Rectangle rectangle = new Rectangle(PIECE_SIZE, PIECE_SIZE);
-                setRectangleStyle(rectangle, pieceMatrix[i][j]);
-                brickPanelBackingMatrix[i][j] = rectangle;
-                brickPanel.add(rectangle, i, j);
-            }
-        }
-    }
-
-    private void moveBrickPanel(CurrentPiece piece) {
-        brickPanel.setLayoutX(gridPane.getLayoutX() + piece.getX() * (brickPanel.getVgap() + PIECE_SIZE));
-        brickPanel.setLayoutY(gridPane.getLayoutY() + piece.getY() * (brickPanel.getHgap() + PIECE_SIZE));
-    }
-
-    private void moveCurrentPieceDown() {
-        refresh(inputListener.onDownEvent());
-        gridPane.requestFocus();
-    }
-
-    private void refresh(CurrentPiece piece) {
-        moveBrickPanel(piece);
-        Color[][] pieceMatrix = piece.getPieceMatrix();
-        for (int i = 0; i < pieceMatrix.length; i++) {
-            for (int j = 0; j < pieceMatrix[i].length; j++) {
-                setRectangleStyle(brickPanelBackingMatrix[i][j], pieceMatrix[i][j]);
             }
         }
     }
@@ -158,6 +129,26 @@ public class GuiController implements Initializable {
         rectangle.setFill(color == null ? Color.TRANSPARENT : color);
         rectangle.setArcHeight(10);
         rectangle.setArcWidth(10);
+    }
+
+    private void moveBrickPanel(CurrentPiece piece) {
+        brickPanel.setLayoutX(gridPane.getLayoutX() + piece.getX() * (brickPanel.getVgap() + RECTANGLE_SIZE));
+        brickPanel.setLayoutY(gridPane.getLayoutY() + piece.getY() * (brickPanel.getHgap() + RECTANGLE_SIZE));
+    }
+
+    private void moveCurrentPieceDown() {
+        inputListener.onDownEvent();
+        gridPane.requestFocus();
+    }
+
+    public void refresh(CurrentPiece piece) {
+        moveBrickPanel(piece);
+        Color[][] pieceMatrix = piece.getPieceMatrix();
+        for (int i = 0; i < pieceMatrix.length; i++) {
+            for (int j = 0; j < pieceMatrix[i].length; j++) {
+                setRectangleStyle(brickPanelBackingMatrix[i][j], pieceMatrix[i][j]);
+            }
+        }
     }
 
     public void bindScore(IntegerProperty scoreProperty) {
@@ -196,7 +187,7 @@ public class GuiController implements Initializable {
         Color[][] pieceMatrix = nextPiece.getPieceMatrix();
         for (int i = 0; i < pieceMatrix.length; i++) {
             for (int j = 0; j < pieceMatrix[i].length; j++) {
-                Rectangle rectangle = new Rectangle(PIECE_SIZE, PIECE_SIZE);
+                Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE);
                 setRectangleStyle(rectangle, pieceMatrix[i][j]);
                 if (pieceMatrix[i][j] != null) {
                     nextPiecePane.add(rectangle, j, i);
