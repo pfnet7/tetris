@@ -2,23 +2,23 @@ package io.github.sczerepko.tetris.model.pieces;
 
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class PieceRotations {
 
     public static final int REPRESENTATION_SIZE = 4;
 
-    private final ArrayList<Color[][]> rotations;
+    private final List<Color[][]> rotations;
     private final int size;
 
-    private int currentRotation;
+    private int currentRotation = 0;
 
     PieceRotations(Color[][]... elements) {
         if (Arrays.stream(elements).anyMatch(this::hasWrongDimensions)) {
             throw new IllegalArgumentException("Piece Rotations need to be " + REPRESENTATION_SIZE + "x" + REPRESENTATION_SIZE);
         }
-        this.rotations = new ArrayList<>(Arrays.asList(elements));
+        this.rotations = List.of(elements);
         size = rotations.size();
     }
 
@@ -40,8 +40,8 @@ class PieceRotations {
         return copy(getModulo(peekIndex));
     }
 
-    private Color[][] getModulo(int currentRotation) {
-        return rotations.get(currentRotation % size);
+    private Color[][] getModulo(int rotation) {
+        return rotations.get(rotation % size);
     }
 
     private Color[][] copy(Color[][] matrix) {

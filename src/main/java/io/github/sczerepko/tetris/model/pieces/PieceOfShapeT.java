@@ -33,15 +33,6 @@ class PieceOfShapeT implements PieceRepresentation {
             }
     );
 
-    private static final PieceOfShapeT INSTANCE = new PieceOfShapeT();
-
-    static PieceOfShapeT getInstance() {
-        return INSTANCE;
-    }
-
-    private PieceOfShapeT() {
-    }
-
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;

@@ -15,15 +15,6 @@ class PieceOfShapeO implements PieceRepresentation {
             }
     );
 
-    private static final PieceOfShapeO INSTANCE = new PieceOfShapeO();
-
-    static PieceOfShapeO getInstance() {
-        return INSTANCE;
-    }
-
-    private PieceOfShapeO() {
-    }
-
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;

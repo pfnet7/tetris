@@ -33,15 +33,6 @@ class PieceOfShapeL implements PieceRepresentation {
             }
     );
 
-    private static final PieceOfShapeL INSTANCE = new PieceOfShapeL();
-
-    static PieceOfShapeL getInstance() {
-        return INSTANCE;
-    }
-
-    private PieceOfShapeL() {
-    }
-
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;

@@ -21,15 +21,6 @@ class PieceOfShapeZ implements PieceRepresentation {
             }
     );
 
-    private static final PieceOfShapeZ INSTANCE = new PieceOfShapeZ();
-
-    static PieceOfShapeZ getInstance() {
-        return INSTANCE;
-    }
-
-    private PieceOfShapeZ() {
-    }
-
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;

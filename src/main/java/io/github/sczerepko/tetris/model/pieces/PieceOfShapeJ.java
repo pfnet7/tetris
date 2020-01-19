@@ -33,15 +33,6 @@ class PieceOfShapeJ implements PieceRepresentation {
             }
     );
 
-    private static final PieceOfShapeJ INSTANCE = new PieceOfShapeJ();
-
-    static PieceOfShapeJ getInstance() {
-        return INSTANCE;
-    }
-
-    private PieceOfShapeJ() {
-    }
-
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;
