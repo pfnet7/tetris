@@ -1,6 +1,9 @@
 package io.github.sczerepko.tetris.model;
 
 
+/**
+ * The enum Translation that is used to represent change of the coordinates in the given directions.
+ */
 public enum Translation {
     DOWN(0, 1),
     LEFT(-1, 0),
@@ -22,4 +25,5 @@ public enum Translation {
     public int getY() {
         return y;
     }
+
 }

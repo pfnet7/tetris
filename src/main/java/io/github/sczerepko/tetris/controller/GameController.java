@@ -5,12 +5,25 @@ import io.github.sczerepko.tetris.model.Translation;
 import io.github.sczerepko.tetris.model.pieces.Piece;
 import io.github.sczerepko.tetris.model.pieces.RandomPieceGenerator;
 
+/**
+ * Game Controller that is in charge of orchestrating the game flow.
+ *
+ * @see InputListener
+ */
 public class GameController implements InputListener {
 
     private GuiController guiController;
     private RandomPieceGenerator randomPieceGenerator;
     private Board board;
 
+    /**
+     * Instantiates a new Game controller.
+     * In the process it initializes the view using the guiController.
+     *
+     * @param guiController        the gui controller
+     * @param board                the board
+     * @param randomPieceGenerator the piece generator that provides new pieces
+     */
     public GameController(GuiController guiController, Board board, RandomPieceGenerator randomPieceGenerator) {
         this.guiController = guiController;
         this.randomPieceGenerator = randomPieceGenerator;
@@ -29,6 +42,7 @@ public class GameController implements InputListener {
         guiController.bindScore(board.scoreProperty());
         board.scoreProperty().setValue(0);
         guiController.refreshGameBackground(board.getBoardMatrix());
+        guiController.startNewGame();
     }
 
     @Override

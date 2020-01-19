@@ -21,15 +21,6 @@ class PieceOfShapeS implements PieceRepresentation {
             }
     );
 
-    private static final PieceOfShapeS INSTANCE = new PieceOfShapeS();
-
-    static PieceOfShapeS getInstance() {
-        return INSTANCE;
-    }
-
-    private PieceOfShapeS() {
-    }
-
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;

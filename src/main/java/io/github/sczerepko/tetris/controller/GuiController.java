@@ -21,6 +21,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
 
+/**
+ * The Gui Controller that is in charge of updating the fxml gui.
+ *
+ * @see Initializable
+ */
 public class GuiController implements Initializable {
 
     private static final int RECTANGLE_SIZE = 30;
@@ -36,7 +41,7 @@ public class GuiController implements Initializable {
     @FXML
     private BorderPane gameOverPane;
     @FXML
-    public BorderPane pausePane;
+    private BorderPane pausePane;
 
     private Rectangle[][] brickPanelBackingMatrix;
     private Rectangle[][] gridPaneBackingMatrix;
@@ -77,16 +82,21 @@ public class GuiController implements Initializable {
                     pause.setValue(!pause.getValue());
                     break;
                 case N:
-                    startNewGame();
+                    inputListener.startNewGame();
                     break;
             }
         });
     }
 
+    /**
+     * Initializes the gridPane and brickPanel backing matrices, and timeline that executes every given interval.
+     *
+     * @param board the board
+     */
     public void initializeView(Board board) {
         Color[][] boardMatrix = board.getBoardMatrix();
         gridPaneBackingMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
-        initGridPaneBackingMatrix(gridPane, gridPaneBackingMatrix, boardMatrix, (rectangle, color) -> rectangle.setFill(Color.TRANSPARENT));
+        initGridPaneBackingMatrix(gridPane, gridPaneBackingMatrix, boardMatrix, (rectangle, _ignored) -> rectangle.setFill(Color.TRANSPARENT));
 
         Piece piece = board.getCurrentPiece();
         Color[][] pieceMatrix = piece.getPieceMatrix();
@@ -141,6 +151,11 @@ public class GuiController implements Initializable {
         gridPane.requestFocus();
     }
 
+    /**
+     * Refreshes the styling of the view based on the given piece.
+     *
+     * @param piece the piece
+     */
     public void refresh(Piece piece) {
         moveBrickPanel(piece);
         Color[][] pieceMatrix = piece.getPieceMatrix();
@@ -151,6 +166,11 @@ public class GuiController implements Initializable {
         }
     }
 
+    /**
+     * Binds score to the given property.
+     *
+     * @param scoreProperty the property to bind
+     */
     public void bindScore(IntegerProperty scoreProperty) {
         score.textProperty().bind(scoreProperty.asString());
     }
@@ -159,6 +179,11 @@ public class GuiController implements Initializable {
         this.inputListener = inputListener;
     }
 
+    /**
+     * Refreshes the game background styling based on the given board matrix.
+     *
+     * @param boardMatrix the board matrix
+     */
     public void refreshGameBackground(Color[][] boardMatrix) {
         for (int i = 0; i < boardMatrix.length; i++) {
             for (int j = 0; j < boardMatrix[i].length; j++) {
@@ -167,21 +192,31 @@ public class GuiController implements Initializable {
         }
     }
 
+    /**
+     * Executes the game over procedure. It stops the timeline and shows the game over panel.
+     */
     public void gameOver() {
         gameOver.setValue(true);
         timeline.stop();
         gameOverPane.setVisible(true);
     }
 
+    /**
+     * Starts new game. It hides the game over panel, request focus and starts timeline.
+     */
     public void startNewGame() {
         gameOver.setValue(false);
         pause.setValue(false);
         gameOverPane.setVisible(false);
-        inputListener.startNewGame();
         gridPane.requestFocus();
         timeline.play();
     }
 
+    /**
+     * Renders next piece pane.
+     *
+     * @param nextPiece the next piece
+     */
     public void renderNextPiecePane(Piece nextPiece) {
         nextPiecePane.getChildren().clear();
         Color[][] pieceMatrix = nextPiece.getPieceMatrix();
@@ -190,7 +225,7 @@ public class GuiController implements Initializable {
                 Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE);
                 setRectangleStyle(rectangle, pieceMatrix[i][j]);
                 if (pieceMatrix[i][j] != null) {
-                    nextPiecePane.add(rectangle, j, i);
+                    nextPiecePane.add(rectangle, i, j);
                 }
             }
         }

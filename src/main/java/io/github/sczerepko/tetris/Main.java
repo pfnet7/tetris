@@ -10,6 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The Main class that is the entry point of the application.
+ */
 public class Main extends Application {
 
     private static final int SCENE_WIDTH = 500;
