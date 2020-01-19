@@ -1,45 +1,18 @@
 package io.github.sczerepko.tetris.model.pieces;
 
-import java.util.Arrays;
+public interface Piece {
 
-public abstract class Piece {
+    int DEFAULT_STARTING_X = 4;
+    int DEFAULT_STARTING_Y = 0;
 
-    private static final int initialX = 3;
-    private static final int initialY = 0;
+    PieceRotations getRotations();
 
-    private int x;
-    private int y;
-
-    protected int currentRotationIndex;
-
-    protected abstract int[][] getRotation();
-
-    public Piece() {
-        this.x = initialX;
-        this.y = initialY;
-        currentRotationIndex = 0;
+    default int getStartingX() {
+        return DEFAULT_STARTING_X;
     }
 
-    public int[][] rotate() {
-        currentRotationIndex = currentRotationIndex + 1;
-        return copy(getRotation());
+    default int getStartingY() {
+        return DEFAULT_STARTING_Y;
     }
 
-    public int[][] getMatrix() {
-        return copy(getRotation());
-    }
-
-    protected int[][] copy(int[][] matrix) {
-        return Arrays.stream(matrix)
-                     .map(int[]::clone)
-                     .toArray(int[][]::new);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
 }

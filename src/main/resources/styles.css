@@ -1,0 +1,37 @@
+.root {
+    -fx-background-image: url("background.png");
+}
+
+#scoreLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+}
+
+#score {
+    -fx-fill: white;
+    -fx-font-size: 25px;
+}
+
+#nextPieceLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+}
+
+.helpLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+
+#gameOverPane {
+    visibility: false;
+    -fx-font-size: 20;
+    -fx-background-color: red;
+    -fx-alignment: center;
+}
+
+#pausePane {
+    visibility: false;
+    -fx-font-size: 20;
+    -fx-background-color: grey;
+    -fx-alignment: center;
+}

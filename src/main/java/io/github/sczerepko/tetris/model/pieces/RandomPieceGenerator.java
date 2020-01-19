@@ -6,17 +6,29 @@ import java.util.function.Supplier;
 
 public class RandomPieceGenerator {
 
-    private static final List<Supplier<? extends Piece>> pieceSuppliers = List.of(
-            IPiece::new, LPiece::new, SPiece::new, SquarePiece::new
+    private static final List<Supplier<? extends Piece>> PIECE_SUPPLIERS = List.of(
+            PieceOfShapeI::new, PieceOfShapeL::new, PieceOfShapeO::new, PieceOfShapeS::new,
+            PieceOfShapeT::new, PieceOfShapeZ::new, PieceOfShapeJ::new
     );
 
-    public static Piece generate() {
-        int random = ThreadLocalRandom.current().nextInt(pieceSuppliers.size());
-        Supplier<? extends Piece> randomPieceSupplier = pieceSuppliers.get(random);
-        return randomPieceSupplier.get();
+    private CurrentPiece currentPiece;
+    private CurrentPiece nextPiece;
+
+    public RandomPieceGenerator() {
+        this.currentPiece = generate();
+        this.nextPiece = generate();
     }
 
-    private RandomPieceGenerator() {
+    public CurrentPiece generate() {
+        int random = ThreadLocalRandom.current().nextInt(PIECE_SUPPLIERS.size());
+        Supplier<? extends Piece> randomPieceSupplier = PIECE_SUPPLIERS.get(random);
+        currentPiece = nextPiece;
+        nextPiece = new CurrentPiece(randomPieceSupplier.get());
+        return currentPiece;
+    }
+
+    public CurrentPiece peek() {
+        return nextPiece;
     }
 
 }

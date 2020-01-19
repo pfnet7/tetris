@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<Pane prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.github.sczerepko.tetris.controller.GuiController">
+   <GridPane fx:id="brickPanel" vgap="1" hgap="1"/>
+   <BorderPane>
+      <center>
+         <GridPane fx:id="gridPane" gridLinesVisible="true" hgap="1.0" minHeight="700.0" minWidth="400.0"
+                   prefHeight="700.0" prefWidth="400.0" vgap="1.0"/>
+      </center>
+   </BorderPane>
+   <VBox layoutX="330.0" layoutY="50" prefHeight="700.0" prefWidth="150.0" spacing="50">
+      <VBox alignment="CENTER">
+         <Label text="Score:" fx:id="scoreLabel"/>
+         <Text text="Text" fx:id="score"/>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" spacing="10">
+         <Label text="Next:" fx:id="nextPieceLabel"/>
+         <BorderPane styleClass="nextPiecePane" prefWidth="100" prefHeight="100" maxWidth="100">
+            <bottom>
+               <GridPane fx:id="nextPiecePane" alignment="CENTER" hgap="1" vgap="1"/>
+            </bottom>
+         </BorderPane>
+      </VBox>
+      <VBox prefHeight="100.0">
+         <Label styleClass="helpLabel" text="Use arrows to move pieces"/>
+         <Label styleClass="helpLabel" text="P - pause/resume"/>
+         <Label styleClass="helpLabel" text="N - start new game"/>
+      </VBox>
+   </VBox>
+   <BorderPane fx:id="gameOverPane" prefWidth="500">
+      <center>
+         <Label text="Game Over! Press N to play again."/>
+      </center>
+   </BorderPane>
+   <BorderPane fx:id="pausePane" prefWidth="500">
+      <center>
+         <Label text="Game paused"/>
+      </center>
+   </BorderPane>
+   <stylesheets>
+      <URL value="@styles.css"/>
+   </stylesheets>
+</Pane>

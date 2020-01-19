@@ -10,12 +10,16 @@ import io.github.sczerepko.tetris.controller.GameController;
 
 public class Main extends Application {
 
-    public static final int SCENE_WIDTH = 500;
-    public static final int SCENE_HEIGHT = 620;
+    private static final int SCENE_WIDTH = 500;
+    private static final int SCENE_HEIGHT = 620;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
         Parent root = fxmlLoader.load();
         GuiController guiController = fxmlLoader.getController();
 
@@ -25,7 +29,4 @@ public class Main extends Application {
         new GameController(guiController);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
