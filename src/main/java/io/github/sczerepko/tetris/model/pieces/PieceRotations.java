@@ -27,21 +27,21 @@ class PieceRotations {
     }
 
     Color[][] current() {
-        return copy(getModulo(currentRotation));
+        return getModulo(currentRotation);
     }
 
     Color[][] next() {
         currentRotation++;
-        return copy(getModulo(currentRotation));
+        return getModulo(currentRotation);
     }
 
     Color[][] peek() {
         int peekIndex = currentRotation + 1;
-        return copy(getModulo(peekIndex));
+        return getModulo(peekIndex);
     }
 
     private Color[][] getModulo(int rotation) {
-        return rotations.get(rotation % size);
+        return copy(rotations.get(rotation % size));
     }
 
     private Color[][] copy(Color[][] matrix) {

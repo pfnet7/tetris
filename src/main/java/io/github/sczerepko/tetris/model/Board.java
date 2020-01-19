@@ -16,7 +16,7 @@ public class Board {
     /**
      * Number of rows needed for tetris.
      */
-    public static final int TETRIS_ROW_NUMBER = 4;
+    public static final int TETRIS_ROW_COUNT = 4;
     /**
      * Number of points for tetris clear.
      */
@@ -58,9 +58,9 @@ public class Board {
      * @return true if the piece can move, false otherwise
      */
     public boolean canPieceMove(Translation translation) {
-        int x = currentPiece.getX() + translation.getX();
-        int y = currentPiece.getY() + translation.getY();
-        return MatrixOperations.isMoveValid(boardMatrix, currentPiece.getPieceMatrix(), x, y);
+        int targetX = currentPiece.getX() + translation.getX();
+        int targetY = currentPiece.getY() + translation.getY();
+        return MatrixOperations.isMoveValid(boardMatrix, currentPiece.getPieceMatrix(), targetX, targetY);
     }
 
     /**
@@ -88,7 +88,7 @@ public class Board {
      *
      * @param translation the translation to move the current piece along
      */
-    public void wallKick(Translation translation) {
+    private void wallKick(Translation translation) {
         currentPiece.translate(translation);
     }
 
@@ -97,7 +97,7 @@ public class Board {
      *
      * @return true if the piece can rotate, false otherwise.
      */
-    public boolean canPieceRotate() {
+    private boolean canPieceRotate() {
         return MatrixOperations.isMoveValid(boardMatrix, currentPiece.peekRotation(), currentPiece.getX(), currentPiece.getY());
     }
 
@@ -116,7 +116,7 @@ public class Board {
     }
 
     private int calculatePoints(int numberOfFullRows) {
-        return numberOfFullRows == TETRIS_ROW_NUMBER
+        return numberOfFullRows == TETRIS_ROW_COUNT
                 ? TETRIS_POINTS
                 : REGULAR_CLEAR_POINTS * numberOfFullRows;
     }
@@ -126,7 +126,7 @@ public class Board {
      *
      * @param points the points to be added
      */
-    public void addPoints(int points) {
+    private void addPoints(int points) {
         score.setValue(score.intValue() + points);
     }
 

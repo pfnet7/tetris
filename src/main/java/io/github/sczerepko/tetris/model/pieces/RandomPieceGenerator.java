@@ -36,8 +36,8 @@ public class RandomPieceGenerator {
      * @return the current piece
      */
     public Piece generate() {
-        int random = ThreadLocalRandom.current().nextInt(PIECE_REPRESENTATIONS_SUPPLIERS.size());
-        var randomPieceRepresentationSupplier = PIECE_REPRESENTATIONS_SUPPLIERS.get(random);
+        int randomIndex = ThreadLocalRandom.current().nextInt(PIECE_REPRESENTATIONS_SUPPLIERS.size());
+        var randomPieceRepresentationSupplier = PIECE_REPRESENTATIONS_SUPPLIERS.get(randomIndex);
         currentPiece = nextPiece;
         nextPiece = new Piece(randomPieceRepresentationSupplier.get());
         return currentPiece;
