@@ -2,7 +2,7 @@ package io.github.sczerepko.tetris.model.pieces;
 
 import javafx.scene.paint.Color;
 
-class PieceOfShapeL implements Piece {
+class PieceOfShapeL implements PieceRepresentation {
 
     private static final Color COLOR = Color.ORANGE;
 
@@ -32,6 +32,15 @@ class PieceOfShapeL implements Piece {
                     {null,  null,  null, null}
             }
     );
+
+    private static final PieceOfShapeL INSTANCE = new PieceOfShapeL();
+
+    static PieceOfShapeL getInstance() {
+        return INSTANCE;
+    }
+
+    private PieceOfShapeL() {
+    }
 
     @Override
     public PieceRotations getRotations() {

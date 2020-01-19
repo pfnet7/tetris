@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -19,11 +19,11 @@ class MatrixOperations {
     private MatrixOperations() {
     }
 
-    public static boolean isMoveValid(Color[][] boardMatrix, Color[][] pieceMatrix, int x, int y) {
+    public static boolean isMoveValid(Color[][] boardMatrix, Color[][] pieceMatrix, int pieceOriginX, int pieceOriginY) {
         for (int i = 0; i < pieceMatrix.length; i++) {
             for (int j = 0; j < pieceMatrix[i].length; j++) {
-                int tempX = x + i;
-                int tempY = y + j;
+                int tempX = pieceOriginX + i;
+                int tempY = pieceOriginY + j;
                 if (pieceMatrix[i][j] != null && (isOutOfBounds(tempX, tempY, boardMatrix) || boardMatrix[tempX][tempY] != null)) {
                     return false;
                 }
@@ -48,7 +48,7 @@ class MatrixOperations {
         }
     }
 
-    public static Set<Integer> calculateFullRowsIndexes(final Color[][] boardMatrix) {
+    public static Set<Integer> calculateFullRowsIndexes(Color[][] boardMatrix) {
         List<Integer> nonEmptyCellIndexes = new ArrayList<>();
         for (Color[] column : boardMatrix) {
             List<Integer> nonEmptyColumnCellIndexes = IntStream.range(0, column.length)
@@ -58,7 +58,7 @@ class MatrixOperations {
             nonEmptyCellIndexes.addAll(nonEmptyColumnCellIndexes);
         }
         Map<Integer, Long> indexesGroupedByCount = nonEmptyCellIndexes.stream()
-                                                                      .collect(groupingBy(Function.identity(), Collectors.counting()));
+                                                                      .collect(groupingBy(identity(), counting()));
         return indexesGroupedByCount.entrySet()
                                     .stream()
                                     .filter(entry -> entry.getValue() == boardMatrix.length)

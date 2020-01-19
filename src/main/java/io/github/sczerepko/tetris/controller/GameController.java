@@ -2,7 +2,7 @@ package io.github.sczerepko.tetris.controller;
 
 import io.github.sczerepko.tetris.model.Board;
 import io.github.sczerepko.tetris.model.Translation;
-import io.github.sczerepko.tetris.model.pieces.CurrentPiece;
+import io.github.sczerepko.tetris.model.pieces.Piece;
 import io.github.sczerepko.tetris.model.pieces.RandomPieceGenerator;
 
 public class GameController implements InputListener {
@@ -34,12 +34,12 @@ public class GameController implements InputListener {
     @Override
     public void onDownEvent() {
         if (board.canPieceMove(Translation.DOWN)) {
-            CurrentPiece currentPiece = board.moveCurrentPiece(Translation.DOWN);
+            Piece currentPiece = board.moveCurrentPiece(Translation.DOWN);
             guiController.refresh(currentPiece);
             return;
         }
         board.handlePieceEmbed();
-        CurrentPiece nextPiece = randomPieceGenerator.generate();
+        Piece nextPiece = randomPieceGenerator.generate();
         if (board.isPieceBlocked(nextPiece)) {
             guiController.gameOver();
         }
@@ -51,19 +51,19 @@ public class GameController implements InputListener {
 
     @Override
     public void onRightEvent() {
-        CurrentPiece currentPiece = board.moveCurrentPiece(Translation.RIGHT);
+        Piece currentPiece = board.moveCurrentPiece(Translation.RIGHT);
         guiController.refresh(currentPiece);
     }
 
     @Override
     public void onLeftEvent() {
-        CurrentPiece currentPiece = board.moveCurrentPiece(Translation.LEFT);
+        Piece currentPiece = board.moveCurrentPiece(Translation.LEFT);
         guiController.refresh(currentPiece);
     }
 
     @Override
     public void onRotateEvent() {
-        CurrentPiece currentPiece = board.rotateCurrentPiece();
+        Piece currentPiece = board.rotateCurrentPiece();
         guiController.refresh(currentPiece);
     }
 

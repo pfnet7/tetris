@@ -1,6 +1,6 @@
 package io.github.sczerepko.tetris.model;
 
-import io.github.sczerepko.tetris.model.pieces.CurrentPiece;
+import io.github.sczerepko.tetris.model.pieces.Piece;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.paint.Color;
@@ -13,19 +13,19 @@ public class Board {
     public static final int TETRIS_POINTS = 800;
     public static final int REGULAR_CLEAR_POINTS = 100;
 
-    private static final int BOARD_WIDTH = 10;
-    private static final int BOARD_HEIGHT = 20;
+    public static final int BOARD_WIDTH = 10;
+    public static final int BOARD_HEIGHT = 20;
 
     private IntegerProperty score;
     private Color[][] boardMatrix;
-    private CurrentPiece currentPiece;
+    private Piece currentPiece;
 
     public Board() {
         boardMatrix = new Color[BOARD_WIDTH][BOARD_HEIGHT];
         score = new SimpleIntegerProperty(0);
     }
 
-    public CurrentPiece moveCurrentPiece(Translation translation) {
+    public Piece moveCurrentPiece(Translation translation) {
         if (canPieceMove(translation)) {
             currentPiece.translate(translation);
         }
@@ -38,7 +38,7 @@ public class Board {
         return MatrixOperations.isMoveValid(boardMatrix, currentPiece.getPieceMatrix(), x, y);
     }
 
-    public CurrentPiece rotateCurrentPiece() {
+    public Piece rotateCurrentPiece() {
         if (!canPieceRotate()) {
             if (currentPiece.getX() == 0) {
                 wallKick(Translation.RIGHT);
@@ -80,15 +80,15 @@ public class Board {
         score.setValue(score.intValue() + points);
     }
 
-    public boolean isPieceBlocked(CurrentPiece nextPiece) {
+    public boolean isPieceBlocked(Piece nextPiece) {
         return !MatrixOperations.isMoveValid(boardMatrix, nextPiece.getPieceMatrix(), nextPiece.getX(), nextPiece.getY());
     }
 
-    public CurrentPiece getCurrentPiece() {
+    public Piece getCurrentPiece() {
         return currentPiece;
     }
 
-    public void setCurrentPiece(CurrentPiece piece) {
+    public void setCurrentPiece(Piece piece) {
         currentPiece = piece;
     }
 

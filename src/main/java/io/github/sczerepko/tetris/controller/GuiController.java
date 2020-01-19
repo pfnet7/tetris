@@ -1,7 +1,7 @@
 package io.github.sczerepko.tetris.controller;
 
 import io.github.sczerepko.tetris.model.Board;
-import io.github.sczerepko.tetris.model.pieces.CurrentPiece;
+import io.github.sczerepko.tetris.model.pieces.Piece;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -88,7 +88,7 @@ public class GuiController implements Initializable {
         gridPaneBackingMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
         initGridPaneBackingMatrix(gridPane, gridPaneBackingMatrix, boardMatrix, (rectangle, color) -> rectangle.setFill(Color.TRANSPARENT));
 
-        CurrentPiece piece = board.getCurrentPiece();
+        Piece piece = board.getCurrentPiece();
         Color[][] pieceMatrix = piece.getPieceMatrix();
         brickPanelBackingMatrix = new Rectangle[pieceMatrix.length][pieceMatrix[0].length];
         initGridPaneBackingMatrix(brickPanel, brickPanelBackingMatrix, pieceMatrix, this::setRectangleStyle);
@@ -131,7 +131,7 @@ public class GuiController implements Initializable {
         rectangle.setArcWidth(10);
     }
 
-    private void moveBrickPanel(CurrentPiece piece) {
+    private void moveBrickPanel(Piece piece) {
         brickPanel.setLayoutX(gridPane.getLayoutX() + piece.getX() * (brickPanel.getVgap() + RECTANGLE_SIZE));
         brickPanel.setLayoutY(gridPane.getLayoutY() + piece.getY() * (brickPanel.getHgap() + RECTANGLE_SIZE));
     }
@@ -141,7 +141,7 @@ public class GuiController implements Initializable {
         gridPane.requestFocus();
     }
 
-    public void refresh(CurrentPiece piece) {
+    public void refresh(Piece piece) {
         moveBrickPanel(piece);
         Color[][] pieceMatrix = piece.getPieceMatrix();
         for (int i = 0; i < pieceMatrix.length; i++) {
@@ -182,7 +182,7 @@ public class GuiController implements Initializable {
         timeline.play();
     }
 
-    public void renderNextPiecePane(CurrentPiece nextPiece) {
+    public void renderNextPiecePane(Piece nextPiece) {
         nextPiecePane.getChildren().clear();
         Color[][] pieceMatrix = nextPiece.getPieceMatrix();
         for (int i = 0; i < pieceMatrix.length; i++) {

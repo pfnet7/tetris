@@ -1,18 +1,43 @@
 package io.github.sczerepko.tetris.model.pieces;
 
-public interface Piece {
+import io.github.sczerepko.tetris.model.Translation;
+import javafx.scene.paint.Color;
 
-    int DEFAULT_STARTING_X = 4;
-    int DEFAULT_STARTING_Y = 0;
+public class Piece {
 
-    PieceRotations getRotations();
+    private int x;
+    private int y;
+    private PieceRepresentation pieceRepresentation;
 
-    default int getStartingX() {
-        return DEFAULT_STARTING_X;
+    public Piece(PieceRepresentation pieceRepresentation) {
+        this.x = pieceRepresentation.getStartingXIndex();
+        this.y = pieceRepresentation.getStartingYIndex();
+        this.pieceRepresentation = pieceRepresentation;
     }
 
-    default int getStartingY() {
-        return DEFAULT_STARTING_Y;
+    public void translate(Translation translation) {
+        this.x += translation.getX();
+        this.y += translation.getY();
+    }
+
+    public Color[][] getPieceMatrix() {
+        return pieceRepresentation.getRotations().current();
+    }
+
+    public Color[][] peekRotation() {
+        return pieceRepresentation.getRotations().peek();
+    }
+
+    public Color[][] rotate() {
+        return pieceRepresentation.getRotations().next();
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
 }

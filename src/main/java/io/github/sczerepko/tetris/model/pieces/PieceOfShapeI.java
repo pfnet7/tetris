@@ -2,11 +2,11 @@ package io.github.sczerepko.tetris.model.pieces;
 
 import javafx.scene.paint.Color;
 
-class PieceOfShapeI implements Piece {
+class PieceOfShapeI implements PieceRepresentation {
 
     private static final Color COLOR = Color.RED;
 
-    private final PieceRotations ROTATIONS = new PieceRotations(
+    private static final PieceRotations ROTATIONS = new PieceRotations(
             new Color[][]{
                     {null,  null,  null,  null},
                     {null,  null,  null,  null},
@@ -21,13 +21,22 @@ class PieceOfShapeI implements Piece {
             }
     );
 
+    private static final PieceOfShapeI INSTANCE = new PieceOfShapeI();
+
+    static PieceOfShapeI getInstance() {
+        return INSTANCE;
+    }
+
+    private PieceOfShapeI() {
+    }
+
     @Override
     public PieceRotations getRotations() {
         return ROTATIONS;
     }
 
     @Override
-    public int getStartingX() {
+    public int getStartingXIndex() {
         return 3;
     }
 
